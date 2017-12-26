@@ -52,6 +52,6 @@ Vous pouvez regarder le sport que vous aimez, vivez et sur demande à un moment 
         <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
         <website>https://www.dazn.com</website>
         <email>[jin] at [xyz] dot [de]</email>
-        <source>https://github.com/kodinerds/repo/tree/master/plugin.video.dazn</source>
+        <source>https://github.com/JinRonin/plugin.video.dazn</source>
     </extension>
 </addon>

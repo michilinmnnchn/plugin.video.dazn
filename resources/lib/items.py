@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
 
-from common import *
+import xbmc
+import xbmcgui
+import xbmcplugin
 
 class Items:
 
-    def __init__(self):
+    def __init__(self, plugin):
         self.cache = True
         self.video = False
+        self.plugin = plugin
 
     def list_items(self, focus=False, upd=False):
         if self.video:
-            xbmcplugin.setContent(addon_handle, content)
-        xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=self.cache, updateListing=upd)
+            xbmcplugin.setContent(self.plugin.addon_handle, self.plugin.content)
+        xbmcplugin.endOfDirectory(self.plugin.addon_handle, cacheToDisc=self.cache, updateListing=upd)
 
-        if force_view:
-            xbmc.executebuiltin('Container.SetViewMode({0})'.format(view_id))
+        if self.plugin.force_view:
+            xbmc.executebuiltin('Container.SetViewMode({0})'.format(self.plugin.view_id))
 
         if focus:
             try:
@@ -32,9 +35,9 @@ class Items:
         }
 
         art = {
-            'thumb': item.get('thumb', icon),
-            'poster': item.get('thumb', icon),
-            'fanart': item.get('fanart', fanart)
+            'thumb': item.get('thumb', self.plugin.addon_icon),
+            'poster': item.get('thumb', self.plugin.addon_icon),
+            'fanart': item.get('fanart', self.plugin.addon_fanart)
         }
 
         labels = {
@@ -60,7 +63,7 @@ class Items:
         if item.get('cm', None):
             listitem.addContextMenuItems( item['cm'] )
 
-        xbmcplugin.addDirectoryItem(addon_handle, build_url(data), listitem, folder)
+        xbmcplugin.addDirectoryItem(self.plugin.addon_handle, self.plugin.build_url(data), listitem, folder)
 
     def play_item(self, item, name, context):
         path = item.ManifestUrl
@@ -76,4 +79,4 @@ class Items:
             xbmc.Player().play(path, listitem)
         else:
             listitem.setPath(path)
-            xbmcplugin.setResolvedUrl(addon_handle, True, listitem)
+            xbmcplugin.setResolvedUrl(self.plugin.addon_handle, True, listitem)

@@ -1,38 +1,39 @@
 # -*- coding: utf-8 -*-
 
 import simple_requests as requests
-from common import *
 
 class Client:
 
-    def __init__(self):
+    def __init__(self, plugin):
 
-        self.DEVICE_ID = addon.getSetting('device_id')
-        self.TOKEN = addon.getSetting('token')
-        self.COUNTRY = addon.getSetting('country')
-        self.LANGUAGE = addon.getSetting('language')
+        self.plugin = plugin
+
+        self.DEVICE_ID = self.plugin.get_setting('device_id')
+        self.TOKEN = self.plugin.get_setting('token')
+        self.COUNTRY = self.plugin.get_setting('country')
+        self.LANGUAGE = self.plugin.get_setting('language')
         self.POST_DATA = {}
         self.ERRORS = 0
 
         self.HEADERS = {
             'Content-Type': 'application/json',
-            'Referer': api_base
+            'Referer': self.plugin.api_base
         }
 
         self.PARAMS = {
             '$format': 'json'
         }
 
-        self.STARTUP = api_base + 'v2/Startup'
-        self.RAIL = api_base + 'v2/Rail'
-        self.RAILS = api_base + 'v3/Rails'
-        self.EPG = api_base + 'v1/Epg'
-        self.EVENT = api_base + 'v2/Event'
-        self.PLAYBACK = api_base + 'v1/Playback'
-        self.SIGNIN = api_base + 'v3/SignIn'
-        self.SIGNOUT = api_base + 'v1/SignOut'
-        self.REFRESH = api_base + 'v3/RefreshAccessToken'
-        self.PROFILE = api_base + 'v1/UserProfile'
+        self.STARTUP = self.plugin.api_base + 'v2/Startup'
+        self.RAIL = self.plugin.api_base + 'v2/Rail'
+        self.RAILS = self.plugin.api_base + 'v3/Rails'
+        self.EPG = self.plugin.api_base + 'v1/Epg'
+        self.EVENT = self.plugin.api_base + 'v2/Event'
+        self.PLAYBACK = self.plugin.api_base + 'v1/Playback'
+        self.SIGNIN = self.plugin.api_base + 'v3/SignIn'
+        self.SIGNOUT = self.plugin.api_base + 'v1/SignOut'
+        self.REFRESH = self.plugin.api_base + 'v3/RefreshAccessToken'
+        self.PROFILE = self.plugin.api_base + 'v1/UserProfile'
 
     def content_data(self, url):
         data = self.request(url)
@@ -83,26 +84,24 @@ class Client:
         if data.get('odata.error', None):
             self.errorHandler(data)
         else:
-            addon.setSetting('viewer_id', data['ViewerId'])
+            self.plugin.set_setting('viewer_id', data['ViewerId'])
 
     def setToken(self, auth, result):
-        log('[{0}] signin: {1}'.format(addon_id, result))
+        self.plugin.log('[{0}] signin: {1}'.format(self.plugin.addon_id, result))
         if auth and result == 'SignedIn':
             self.TOKEN = auth['Token']
         else:
             if result == 'HardOffer':
-                dialog.ok(addon_name, getString(30161))
+                self.plugin.dialog_ok(30161)
             self.signOut()
-        addon.setSetting('token', self.TOKEN)
+        self.plugin.set_setting('token', self.TOKEN)
 
     def signIn(self):
-        email = dialog.input(addon_name + getString(30002), type=xbmcgui.INPUT_ALPHANUM)
-        if email:
-            password = dialog.input(addon_name + getString(30003), type=xbmcgui.INPUT_ALPHANUM, option=xbmcgui.ALPHANUM_HIDE_INPUT)
-        if '@' in email and len(password) > 4:
+        credentials = self.plugin.get_credentials()
+        if credentials:
             self.POST_DATA = {
-                'Email': utfenc(email),
-                'Password': utfenc(password),
+                'Email': credentials['email'],
+                'Password': credentials['password'],
                 'DeviceId': self.DEVICE_ID,
                 'Platform': 'web'
             }
@@ -113,7 +112,7 @@ class Client:
                 self.setToken(data['AuthToken'], data.get('Result', 'SignInError'))
                 self.userProfile()
         else:
-            dialog.ok(addon_name, getString(30004))
+            self.plugin.dialog_ok(30004)
 
     def signOut(self):
         self.POST_DATA = {
@@ -121,7 +120,7 @@ class Client:
         }
         r = self.request(self.SIGNOUT)
         self.TOKEN = ''
-        addon.setSetting('token', self.TOKEN)
+        self.plugin.set_setting('token', self.TOKEN)
 
     def refreshToken(self):
         self.POST_DATA = {
@@ -135,8 +134,8 @@ class Client:
             self.setToken(data['AuthToken'], data.get('Result', 'RefreshAccessTokenError'))
 
     def startUp(self, device_id=''):
-        kodi_language = get_language()
-        if device_id:
+        kodi_language = self.plugin.get_language()
+        if device_id != '':
             self.DEVICE_ID = device_id
         self.POST_DATA = {
             'LandingPageKey': 'generic',
@@ -155,13 +154,13 @@ class Client:
                 if i == kodi_language:
                     self.LANGUAGE = i
                     break
-            addon.setSetting('language', self.LANGUAGE)
-            addon.setSetting('country', self.COUNTRY)
+            self.plugin.set_setting('language', self.LANGUAGE)
+            self.plugin.set_setting('country', self.COUNTRY)
             if not self.TOKEN:
                 self.signIn()
         else:
             self.TOKEN = ''
-            dialog.ok(addon_name, getString(30101))
+            self.plugin.dialog_ok(30101)
 
     def request(self, url):
 
@@ -179,26 +178,26 @@ class Client:
             return r.json()
         else:
             if not r.status_code == 204:
-                log('[{0}] error: {1} ({2}, {3})'.format(addon_id, url, str(r.status_code), r.headers.get('content-type', '')))
+                self.plugin.log('[{0}] error: {1} ({2}, {3})'.format(self.plugin.addon_id, url, str(r.status_code), r.headers.get('content-type', '')))
             return {}
 
     def errorHandler(self, data):
         self.ERRORS += 1
         msg  = data['odata.error']['message']['value']
         code = str(data['odata.error']['code'])
-        log('[{0}] version: {1} country: {2} language: {3}'.format(addon_id, addon_version, self.COUNTRY, self.LANGUAGE))
-        log('[{0}] error: {1} ({2})'.format(addon_id, msg, code))
+        self.plugin.log('[{0}] version: {1} country: {2} language: {3}'.format(self.plugin.addon_id, self.plugin.addon_version, self.COUNTRY, self.LANGUAGE))
+        self.plugin.log('[{0}] error: {1} ({2})'.format(self.plugin.addon_id, msg, code))
         if code == '10000' and self.ERRORS < 3:
             self.refreshToken()
         elif (code == '401' or code == '10033') and self.ERRORS < 3:
             self.signIn()
         elif code == '7':
-            dialog.ok(addon_name, getString(30107))
+            self.plugin.dialog_ok(30107)
         elif code == '3001':
             self.startUp()
         elif code == '10006':
-            dialog.ok(addon_name, getString(30101))
+            self.plugin.dialog_ok(30101)
         elif code == '10008':
-            dialog.ok(addon_name, getString(30108))
+            self.plugin.dialog_ok(30108)
         elif code == '10049':
-            dialog.ok(addon_name, getString(30151))
+            self.plugin.dialog_ok(30151)
