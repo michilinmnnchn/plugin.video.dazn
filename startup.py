@@ -2,7 +2,7 @@
 
 import xbmcaddon
 
-addon = xbmcaddon.Addon(id='plugin.video.dazn')
+addon = xbmcaddon.Addon()
 
 if __name__ == '__main__':
     addon.setSetting('startup', 'true')

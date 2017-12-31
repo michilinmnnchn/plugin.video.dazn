@@ -14,10 +14,9 @@ plugin = Common(
     addon_url=url_
 )
 client = Client(plugin)
-parser = Parser(plugin=plugin)
+parser = Parser(plugin)
 
 def router(paramstring):
-
     args = dict(urlparse.parse_qs(paramstring))
     mode = args.get('mode', ['rails'])[0]
     title = args.get('title', [''])[0]
@@ -43,10 +42,10 @@ def router(paramstring):
 if __name__ == '__main__':
     if plugin.get_setting('startup') == 'true':
         device_id = plugin.uniq_id()
-        if device_id:
+        playable = plugin.start_is_helper()
+        if device_id and playable:
             client.startUp(device_id)
-            playable = plugin.start_is_helper()
-            if client.TOKEN and playable:
+            if client.TOKEN:
                 plugin.set_setting('startup', 'false')
 
     if client.TOKEN and client.DEVICE_ID:

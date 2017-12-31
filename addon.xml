@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.dazn" version="1.0.5" name="DAZN" provider-name="Jin">
+<addon id="plugin.video.dazn" version="1.0.6" name="DAZN" provider-name="Jin">
     <requires>
         <import addon="xbmc.python" version="2.25.0"/>
         <import addon="inputstream.adaptive" version="2.0.18"/>
-        <import addon="script.module.inputstreamhelper" version="0.2.2"/>
+        <import addon="script.module.inputstreamhelper" version="0.2.3"/>
     </requires>
     <extension point="xbmc.python.pluginsource" library="addon.py">
         <provides>video</provides>
@@ -11,18 +11,19 @@
 	<extension point="xbmc.service" library="startup.py" start="startup"/>
     <extension point="xbmc.addon.metadata">
         <news>
+- code update
 - removed pydes as dependency (user credentials will not be saved)
-- widevine and unique id check only once at addon start
+- widevine and unique id check only once at addon startup
 - added screenshots
 - new fanart
         </news>
         <assets>
-            <icon>resources\images\icon.png</icon>
-            <fanart>resources\images\fanart.jpg</fanart>
-            <screenshot>resources\images\screenshot-01.jpg</screenshot>
-            <screenshot>resources\images\screenshot-02.jpg</screenshot>
-            <screenshot>resources\images\screenshot-03.jpg</screenshot>
-            <screenshot>resources\images\screenshot-04.jpg</screenshot>
+            <icon>resources\icon.png</icon>
+            <fanart>resources\fanart.jpg</fanart>
+            <screenshot>resources\media\screenshot-01.jpg</screenshot>
+            <screenshot>resources\media\screenshot-02.jpg</screenshot>
+            <screenshot>resources\media\screenshot-03.jpg</screenshot>
+            <screenshot>resources\media\screenshot-04.jpg</screenshot>
         </assets>
         <summary lang="de_DE">ERLEBE DEINEN SPORT. LIVE UND ON-DEMAND.</summary>
         <description lang="de_DE">
@@ -49,7 +50,7 @@ Vous pouvez regarder le sport que vous aimez, vivez et sur demande à un moment 
         </description>
         <disclaimer lang="fr_FR">Addiciel non officiel - Utilisez à vos risques et périls</disclaimer>
         <platform>all</platform>
-        <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+        <license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
         <website>https://www.dazn.com</website>
         <email>[jin] at [xyz] dot [de]</email>
         <source>https://github.com/JinRonin/plugin.video.dazn</source>

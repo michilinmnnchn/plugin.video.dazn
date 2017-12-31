@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
 
-import urllib
-import time
 import datetime
+import hashlib
+import time
+import urllib
+import uuid
 import xbmc
 import xbmcaddon
 import xbmcgui
-import uuid
-from hashlib import md5
 from inputstreamhelper import Helper
 from resources import resources
 
 class Common:
 
     def __init__(self, addon_handle=None, addon_url=None):
-
         self.api_base = 'https://isl.dazn.com/misl/'
         self.time_format = '%Y-%m-%dT%H:%M:%SZ'
         self.date_format = '%Y-%m-%d'
@@ -74,7 +73,7 @@ class Common:
         return None
 
     def log(self, msg):
-        xbmc.log(str(msg), xbmc.LOGNOTICE)
+        xbmc.log(str(msg), xbmc.LOGDEBUG)
 
     def build_url(self, query):
         return self.addon_url + '?' + urllib.urlencode(query)
@@ -113,7 +112,7 @@ class Common:
             time.sleep(1)
             mac_addr = xbmc.getInfoLabel('Network.MacAddress')
         if ":" in mac_addr:
-            device_id = str(uuid.UUID(md5(str(mac_addr.decode("utf-8"))).hexdigest()))
+            device_id = str(uuid.UUID(hashlib.md5(str(mac_addr.decode("utf-8"))).hexdigest()))
         else:
             log("[{0}] error: failed to get device id ({1})".format(self.addon_id, str(mac_addr)))
             self.dialog_ok(30051)

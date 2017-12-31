@@ -5,7 +5,6 @@ import simple_requests as requests
 class Client:
 
     def __init__(self, plugin):
-
         self.plugin = plugin
 
         self.DEVICE_ID = self.plugin.get_setting('device_id')
@@ -156,14 +155,15 @@ class Client:
                     break
             self.plugin.set_setting('language', self.LANGUAGE)
             self.plugin.set_setting('country', self.COUNTRY)
-            if not self.TOKEN:
+            if self.TOKEN:
+                self.refreshToken()
+            else:
                 self.signIn()
         else:
             self.TOKEN = ''
             self.plugin.dialog_ok(30101)
 
     def request(self, url):
-
         self.HEADERS['Authorization'] = 'Bearer ' + self.TOKEN
         self.PARAMS['LanguageCode'] = self.LANGUAGE
         self.PARAMS['Country'] = self.COUNTRY
