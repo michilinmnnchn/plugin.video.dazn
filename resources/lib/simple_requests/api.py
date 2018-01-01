@@ -35,7 +35,6 @@ class Response():
         self.code = -1
         self.text = u''
         self.status_code = -1
-        pass
 
     def read(self):
         return self.text
@@ -152,7 +151,7 @@ def _request(method, url,
     response = None
     try:
         response = opener.open(request)
-    except urllib2.HTTPError, e:
+    except urllib2.HTTPError as e:
         # HTTPError implements addinfourl, so we can use the exception to construct a response
         if isinstance(e, urllib2.addinfourl):
             response = e

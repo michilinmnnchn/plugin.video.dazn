@@ -18,12 +18,12 @@
 - new fanart
         </news>
         <assets>
-            <icon>resources\icon.png</icon>
-            <fanart>resources\fanart.jpg</fanart>
-            <screenshot>resources\media\screenshot-01.jpg</screenshot>
-            <screenshot>resources\media\screenshot-02.jpg</screenshot>
-            <screenshot>resources\media\screenshot-03.jpg</screenshot>
-            <screenshot>resources\media\screenshot-04.jpg</screenshot>
+            <icon>resources/icon.png</icon>
+            <fanart>resources/fanart.jpg</fanart>
+            <screenshot>resources/media/screenshot-01.jpg</screenshot>
+            <screenshot>resources/media/screenshot-02.jpg</screenshot>
+            <screenshot>resources/media/screenshot-03.jpg</screenshot>
+            <screenshot>resources/media/screenshot-04.jpg</screenshot>
         </assets>
         <summary lang="de_DE">ERLEBE DEINEN SPORT. LIVE UND ON-DEMAND.</summary>
         <description lang="de_DE">
