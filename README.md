@@ -6,7 +6,7 @@ Any trademarks used belong to their owning companies & organisations.
 
 ## Dependencies
  * valid DAZN subscription (https://www.dazn.com)
- * script.module.inputstreamhelper >= 0.2.3 (http://mirrors.kodi.tv/addons/krypton/script.module.inputstreamhelper/)
+ * script.module.inputstreamhelper >= 0.2.4 (http://mirrors.kodi.tv/addons/krypton/script.module.inputstreamhelper/)
 
 This add-on requires Kodi 17.4 or higher with InputStream Adaptive installed. Kodi 18 is required for Android based devices.
 

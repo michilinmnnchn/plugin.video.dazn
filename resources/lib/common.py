@@ -114,7 +114,7 @@ class Common:
         if ":" in mac_addr:
             device_id = str(uuid.UUID(hashlib.md5(str(mac_addr.decode("utf-8"))).hexdigest()))
         else:
-            log("[{0}] error: failed to get device id ({1})".format(self.addon_id, str(mac_addr)))
+            self.log("[{0}] error: failed to get device id ({1})".format(self.addon_id, str(mac_addr)))
             self.dialog_ok(30051)
         self.set_setting('device_id', device_id)
         return device_id

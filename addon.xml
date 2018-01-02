@@ -2,8 +2,8 @@
 <addon id="plugin.video.dazn" version="1.0.6" name="DAZN" provider-name="Jin">
     <requires>
         <import addon="xbmc.python" version="2.25.0"/>
-        <import addon="inputstream.adaptive" version="2.0.18"/>
-        <import addon="script.module.inputstreamhelper" version="0.2.3"/>
+        <import addon="inputstream.adaptive" version="2.0.10"/>
+        <import addon="script.module.inputstreamhelper" version="0.2.4"/>
     </requires>
     <extension point="xbmc.python.pluginsource" library="addon.py">
         <provides>video</provides>
@@ -11,7 +11,8 @@
 	<extension point="xbmc.service" library="startup.py" start="startup"/>
     <extension point="xbmc.addon.metadata">
         <news>
-- code update
+- fix missing self in uniq_id
+- fix possible error at startup
 - removed pydes as dependency (user credentials will not be saved)
 - widevine and unique id check only once at addon startup
 - added screenshots
