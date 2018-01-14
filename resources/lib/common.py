@@ -29,6 +29,7 @@ class Common:
         self.content = addon.getSetting('content')
         self.view_id = addon.getSetting('view_id')
         self.force_view = addon.getSetting('force_view') == 'true'
+        self.startup = addon.getSetting('startup') == 'true'
 
     def utfenc(self, text):
         result = text
