@@ -23,16 +23,18 @@ class Client:
             '$format': 'json'
         }
 
-        self.STARTUP = self.plugin.api_base + 'v2/Startup'
+        self.STARTUP = self.plugin.api_base + 'v4/Startup'
         self.RAIL = self.plugin.api_base + 'v2/Rail'
-        self.RAILS = self.plugin.api_base + 'v3/Rails'
+        self.RAILS = self.plugin.api_base + 'v4/Rails'
         self.EPG = self.plugin.api_base + 'v1/Epg'
         self.EVENT = self.plugin.api_base + 'v2/Event'
-        self.PLAYBACK = self.plugin.api_base + 'v1/Playback'
-        self.SIGNIN = self.plugin.api_base + 'v3/SignIn'
+        self.PLAYBACK = self.plugin.api_base + 'v2/Playback'
+        self.SIGNIN = self.plugin.api_base + 'v4/SignIn'
         self.SIGNOUT = self.plugin.api_base + 'v1/SignOut'
-        self.REFRESH = self.plugin.api_base + 'v3/RefreshAccessToken'
+        self.REFRESH = self.plugin.api_base + 'v4/RefreshAccessToken'
         self.PROFILE = self.plugin.api_base + 'v1/UserProfile'
+        self.PUSH_DEVICES = self.plugin.api_base + 'v1/notifications/devices'
+        self.PUSH_REMINDERS = self.plugin.api_base + 'v1/notifications/reminders'
 
     def content_data(self, url):
         data = self.request(url)
@@ -59,15 +61,15 @@ class Client:
         return self.content_data(self.EVENT)
 
     def playback_data(self, id_):
-        self.POST_DATA = {
+        params = {
             'AssetId': id_,
             'Format': 'MPEG-DASH',
             'PlayerId': 'DAZN-' + self.DEVICE_ID,
             'Secure': 'true',
             'PlayReadyInitiator': 'false',
-            'BadManifests': [],
-            'LanguageCode': self.LANGUAGE,
+            'LanguageCode': self.LANGUAGE
         }
+        self.PARAMS.update(params)
         return self.request(self.PLAYBACK)
 
     def playback(self, id_):

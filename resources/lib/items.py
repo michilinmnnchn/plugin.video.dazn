@@ -73,7 +73,7 @@ class Items:
         listitem.setProperty('inputstreamaddon', 'inputstream.adaptive')
         listitem.setProperty('inputstream.adaptive.manifest_type', 'mpd')
         listitem.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
-        listitem.setProperty('inputstream.adaptive.license_key', item.LaUrl+'&_widevineChallenge=B{SSM}|||JBlicense')
+        listitem.setProperty('inputstream.adaptive.license_key', '{0}&{1}&_widevineChallenge=B{{SSM}}|||JBlicense'.format(item.LaUrl, item.LaUrlAuthParam))
         if context:
             listitem.setInfo('video', {'Title': name})
             xbmc.Player().play(path, listitem)

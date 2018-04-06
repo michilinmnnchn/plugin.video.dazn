@@ -26,7 +26,7 @@ class Tiles:
             self.params = i['EventId']
         self.update_item(i)
 
-    def add_duration(self, i):
+    def add_duration(self):
         if 'UpComing' in self.type:
             self.end = self.start
             self.start = self.now
@@ -44,6 +44,9 @@ class Tiles:
         background = i.get('BackgroundImage', '')
         if background:
             self.item['fanart'] = url.format(background['Id'], '1280', '720', background['ImageMimeType'])
+        promo = i.get('PromoImage', '')
+        if promo:
+            self.item['thumb'] = url.format(promo['Id'], '720', '404', promo['ImageMimeType'])
 
     def update_item(self, i):
         self.item['mode'] = self.mode
@@ -82,4 +85,4 @@ class Tiles:
         self.item['competition'] = self.competition
 
         self.add_thumb(i)
-        self.add_duration(i)
+        self.add_duration()

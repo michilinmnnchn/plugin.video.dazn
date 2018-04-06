@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import base64
 import datetime
 import hashlib
 import time
@@ -36,6 +37,12 @@ class Common:
         if isinstance(text, unicode):
             result = text.encode('utf-8')
         return result
+
+    def b64dec(self, data):
+        missing_padding = len(data) % 4
+        if missing_padding != 0:
+            data += b'='* (4 - missing_padding)
+        return base64.b64decode(data)
 
     def get_addon(self):
         return xbmcaddon.Addon()
