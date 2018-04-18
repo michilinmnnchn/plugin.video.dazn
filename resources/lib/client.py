@@ -11,6 +11,7 @@ class Client:
         self.TOKEN = self.plugin.get_setting('token')
         self.COUNTRY = self.plugin.get_setting('country')
         self.LANGUAGE = self.plugin.get_setting('language')
+        self.PORTABILITY = self.plugin.get_setting('portability')
         self.POST_DATA = {}
         self.ERRORS = 0
 
@@ -85,6 +86,8 @@ class Client:
         if data.get('odata.error', None):
             self.errorHandler(data)
         else:
+            if self.PORTABILITY == 'NativeAndPortabilityAvailable':
+                self.plugin.set_setting('country', data['UserCountryCode'])
             self.plugin.set_setting('viewer_id', data['ViewerId'])
 
     def setToken(self, auth, result):
@@ -111,7 +114,6 @@ class Client:
                 self.errorHandler(data)
             else:
                 self.setToken(data['AuthToken'], data.get('Result', 'SignInError'))
-                self.userProfile()
         else:
             self.plugin.dialog_ok(30004)
 
@@ -146,6 +148,7 @@ class Client:
         data = self.request(self.STARTUP)
         region = data.get('Region', {})
         if region.get('isAllowed', False):
+            self.PORTABILITY = region['CountryPortabilityStatus']
             self.COUNTRY = region['Country']
             self.LANGUAGE = region['Language']
             languages = data['SupportedLanguages']
@@ -155,6 +158,7 @@ class Client:
                     break
             self.plugin.set_setting('language', self.LANGUAGE)
             self.plugin.set_setting('country', self.COUNTRY)
+            self.plugin.set_setting('portability', self.PORTABILITY)
             if self.TOKEN:
                 self.refreshToken()
             else:

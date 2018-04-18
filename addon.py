@@ -47,6 +47,7 @@ if __name__ == '__main__':
             client.startUp()
             if client.TOKEN:
                 plugin.set_setting('startup', 'false')
+                client.userProfile()
         else:
             client.TOKEN = ''
 

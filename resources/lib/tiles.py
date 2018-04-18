@@ -46,7 +46,7 @@ class Tiles:
             self.item['fanart'] = url.format(background['Id'], '1280', '720', background['ImageMimeType'])
         promo = i.get('PromoImage', '')
         if promo:
-            self.item['thumb'] = url.format(promo['Id'], '720', '404', promo['ImageMimeType'])
+            self.item['thumb'] = url.format(promo['Id'], '720', '270', promo['ImageMimeType'])
 
     def update_item(self, i):
         self.item['mode'] = self.mode

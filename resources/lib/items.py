@@ -11,13 +11,18 @@ class Items:
         self.video = False
         self.plugin = plugin
 
-    def list_items(self, focus=False, upd=False):
+    def list_items(self, focus=False, upd=False, epg=False):
         if self.video:
             xbmcplugin.setContent(self.plugin.addon_handle, self.plugin.content)
         xbmcplugin.endOfDirectory(self.plugin.addon_handle, cacheToDisc=self.cache, updateListing=upd)
 
         if self.plugin.force_view:
-            xbmc.executebuiltin('Container.SetViewMode({0})'.format(self.plugin.view_id))
+            view_id = self.plugin.view_id
+            if self.video:
+                view_id = self.plugin.view_id_videos
+            if epg:
+                view_id = self.plugin.view_id_epg
+            xbmc.executebuiltin('Container.SetViewMode({0})'.format(view_id))
 
         if focus:
             try:
