@@ -37,20 +37,20 @@ msgid "Override View"
 msgstr "Vue de priorité"
 
 msgctxt "#30012"
-msgid "View: Content"
-msgstr "Vue: Content"
+msgid "Content Type"
+msgstr "Type De Contenu"
 
 msgctxt "#30013"
-msgid "View: ID"
-msgstr "Vue: ID"
+msgid "View: Folders"
+msgstr "Vue: Dossier"
 
 msgctxt "#30014"
-msgid "View Videos: ID"
-msgstr "Vue Vidéos: ID"
+msgid "View: Videos"
+msgstr "Vue: Vidéos"
 
 msgctxt "#30015"
-msgid "View Schedule: ID"
-msgstr "Vue Horaire: ID"
+msgid "View: Schedule"
+msgstr "Vue: Horaire"
 
 msgctxt "#30020"
 msgid "Videoplayer"

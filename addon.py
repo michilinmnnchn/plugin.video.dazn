@@ -33,14 +33,14 @@ def router(paramstring):
             date = plugin.get_date()
         parser.epg_items(client.epg(date), date, mode)
     elif mode == 'play':
-        parser.playback(client.playback(id_), client.TOKEN)
+        parser.playback(client.playback(id_))
     elif mode == 'play_context':
-        parser.playback(client.playback(id_), client.TOKEN, title, True)
+        parser.playback(client.playback(id_), title, True)
     elif mode == 'is_settings':
         plugin.open_is_settings()
 
 if __name__ == '__main__':
-    if plugin.startup:
+    if plugin.startup or not client.TOKEN:
         playable = plugin.start_is_helper()
         client.DEVICE_ID = plugin.uniq_id()
         if client.DEVICE_ID and playable:

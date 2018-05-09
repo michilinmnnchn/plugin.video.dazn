@@ -77,6 +77,5 @@ class Parser:
             self.items.add_item(date_item(self.plugin.get_next_day(date)))
         self.items.list_items(upd=update, epg=True)
 
-    def playback(self, data, token, name=False, context=False):
-        token_data = self.plugin.b64dec(token.split('.')[1])
-        self.items.play_item(Playback(data, token_data), name, context)
+    def playback(self, data, name=False, context=False):
+        self.items.play_item(Playback(self.plugin, data), name, context)

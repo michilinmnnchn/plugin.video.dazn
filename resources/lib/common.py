@@ -3,12 +3,14 @@
 import base64
 import datetime
 import hashlib
+import json
 import time
 import urllib
 import uuid
 import xbmc
 import xbmcaddon
 import xbmcgui
+import _strptime
 from inputstreamhelper import Helper
 from resources import resources
 
@@ -18,6 +20,7 @@ class Common:
         self.api_base = 'https://isl.dazn.com/misl/'
         self.time_format = '%Y-%m-%dT%H:%M:%SZ'
         self.date_format = '%Y-%m-%d'
+        self.portability_list = ['AT', 'DE']
 
         addon = self.get_addon()
         self.addon_handle = addon_handle
@@ -63,6 +66,10 @@ class Common:
 
     def dialog_ok(self, id_):
         self.get_dialog().ok(self.addon_name, self.get_string(id_))
+
+    def notification(self, title, msg, thumb):
+        duration = self.get_setting('display_duration')
+        xbmc.executebuiltin('XBMC.Notification({0}, {1}, {2}, {3})'.format(title, msg, duration, thumb))
 
     def get_resource(self, string):
         result = self.utfenc(string)
@@ -165,3 +172,12 @@ class Common:
             spl = dlg.split('/')
             date = '%s-%s-%s' % (spl[2], spl[1], spl[0])
         return date
+
+    def get_mpx(self, token):
+        token_data = json.loads(self.b64dec(token.split('.')[1]))
+        return token_data['mpx']
+
+    def portability_country(self, country, user_country):
+        if user_country in self.portability_list:
+            country = user_country
+        return country

@@ -12,6 +12,7 @@
         <setting label="viewer_id" type="text" id="viewer_id" default="" visible="false"/>
         <setting label="portability" type="text" id="portability" default="" visible="false"/>
         <setting label="token" type="text" id="token" default="" visible="false"/>
+        <setting label="mpx" type="text" id="mpx" default="" visible="false"/>
         <setting label="startup" type="bool" id="startup" default="true" visible="false"/>
     </category>
     <category label="30020">

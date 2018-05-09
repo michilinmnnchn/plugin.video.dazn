@@ -9,6 +9,7 @@ class Client:
 
         self.DEVICE_ID = self.plugin.get_setting('device_id')
         self.TOKEN = self.plugin.get_setting('token')
+        self.MPX = self.plugin.get_setting('mpx')
         self.COUNTRY = self.plugin.get_setting('country')
         self.LANGUAGE = self.plugin.get_setting('language')
         self.PORTABILITY = self.plugin.get_setting('portability')
@@ -34,8 +35,6 @@ class Client:
         self.SIGNOUT = self.plugin.api_base + 'v1/SignOut'
         self.REFRESH = self.plugin.api_base + 'v4/RefreshAccessToken'
         self.PROFILE = self.plugin.api_base + 'v1/UserProfile'
-        self.PUSH_DEVICES = self.plugin.api_base + 'v1/notifications/devices'
-        self.PUSH_REMINDERS = self.plugin.api_base + 'v1/notifications/reminders'
 
     def content_data(self, url):
         data = self.request(url)
@@ -86,19 +85,22 @@ class Client:
         if data.get('odata.error', None):
             self.errorHandler(data)
         else:
-            if self.PORTABILITY == 'NativeAndPortabilityAvailable':
-                self.plugin.set_setting('country', data['UserCountryCode'])
+            if 'PortabilityAvailable' in self.PORTABILITY:
+                self.COUNTRY = self.plugin.portability_country(self.COUNTRY, data['UserCountryCode'])
+                self.plugin.set_setting('country', self.COUNTRY)
             self.plugin.set_setting('viewer_id', data['ViewerId'])
 
     def setToken(self, auth, result):
         self.plugin.log('[{0}] signin: {1}'.format(self.plugin.addon_id, result))
         if auth and result == 'SignedIn':
             self.TOKEN = auth['Token']
+            self.MPX = self.plugin.get_mpx(self.TOKEN)
         else:
             if result == 'HardOffer':
                 self.plugin.dialog_ok(30161)
             self.signOut()
         self.plugin.set_setting('token', self.TOKEN)
+        self.plugin.set_setting('mpx', self.MPX)
 
     def signIn(self):
         credentials = self.plugin.get_credentials()
@@ -189,7 +191,7 @@ class Client:
         self.ERRORS += 1
         msg  = data['odata.error']['message']['value']
         code = str(data['odata.error']['code'])
-        self.plugin.log('[{0}] version: {1} country: {2} language: {3}'.format(self.plugin.addon_id, self.plugin.addon_version, self.COUNTRY, self.LANGUAGE))
+        self.plugin.log('[{0}] version: {1} country: {2} language: {3} portability: {4}'.format(self.plugin.addon_id, self.plugin.addon_version, self.COUNTRY, self.LANGUAGE, self.PORTABILITY))
         self.plugin.log('[{0}] error: {1} ({2})'.format(self.plugin.addon_id, msg, code))
         if code == '10000' and self.ERRORS < 3:
             self.refreshToken()

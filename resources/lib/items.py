@@ -60,8 +60,8 @@ class Items:
             self.cache = False
             self.video = True
             folder = False
-            listitem.addStreamInfo('video', {'duration':item.get('duration', 0)})
-            listitem.setProperty('IsPlayable', 'true')
+            listitem.addStreamInfo('video', {'duration': item.get('duration', 0)})
+            listitem.setProperty('IsPlayable', item.get('playable', 'false'))
         else:
             folder = True
 

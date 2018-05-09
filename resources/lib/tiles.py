@@ -16,6 +16,7 @@ class Tiles:
         self.type = i.get('Type', '')
         self.nav = i.get('NavigateTo', '')
         self.related = i.get('Related', [])
+        self.videos = i.get('Videos', [])
         if self.nav:
             self.mode = 'rails'
             self.id = i['NavigateTo']
@@ -57,6 +58,9 @@ class Tiles:
 
         if self.params:
             self.item['params'] = self.params
+
+        if self.videos:
+            self.item['playable'] = 'true'
 
         if 'Epg' in i.get('Id', ''):
             if self.competition:
