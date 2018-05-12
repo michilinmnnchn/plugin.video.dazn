@@ -67,8 +67,7 @@ class Common:
     def dialog_ok(self, id_):
         self.get_dialog().ok(self.addon_name, self.get_string(id_))
 
-    def notification(self, title, msg, thumb):
-        duration = self.get_setting('display_duration')
+    def notification(self, title, msg, duration, thumb):
         xbmc.executebuiltin('XBMC.Notification({0}, {1}, {2}, {3})'.format(title, msg, duration, thumb))
 
     def get_resource(self, string):
