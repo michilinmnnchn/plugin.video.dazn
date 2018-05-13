@@ -167,6 +167,7 @@ class Client:
                 self.signIn()
         else:
             self.TOKEN = ''
+            self.plugin.log('[{0}] version: {1} region: {2}'.format(self.plugin.addon_id, self.plugin.addon_version, str(region)))
             self.plugin.dialog_ok(30101)
 
     def request(self, url):
