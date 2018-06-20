@@ -41,7 +41,7 @@ class Items:
 
         art = {
             'thumb': item.get('thumb', self.plugin.addon_icon),
-            'poster': item.get('thumb', self.plugin.addon_icon),
+            'poster': item.get('fanart', self.plugin.addon_fanart),
             'fanart': item.get('fanart', self.plugin.addon_fanart)
         }
 
@@ -77,6 +77,7 @@ class Items:
         listitem.setMimeType('application/dash+xml')
         listitem.setProperty('inputstreamaddon', 'inputstream.adaptive')
         listitem.setProperty('inputstream.adaptive.manifest_type', 'mpd')
+        # listitem.setProperty('inputstream.adaptive.manifest_update_parameter', 'full')
         listitem.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
         listitem.setProperty('inputstream.adaptive.license_key', '{0}&{1}&_widevineChallenge=B{{SSM}}|||JBlicense'.format(item.LaUrl, item.LaUrlAuthParam))
         if context:
