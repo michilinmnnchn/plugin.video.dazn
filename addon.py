@@ -53,5 +53,5 @@ if __name__ == '__main__':
 
     if client.TOKEN and client.DEVICE_ID:
         router(sys.argv[2][1:])
-
-sys.exit(0)
+    else:
+        sys.exit(0)
