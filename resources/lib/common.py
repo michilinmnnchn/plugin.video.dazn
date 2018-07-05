@@ -63,10 +63,10 @@ class Common:
     def get_datapath(self):
         return self.utfdec(xbmc.translatePath(self.get_addon().getAddonInfo('profile')))
 
-    def get_filepath(self, file):
-        if file.startswith('http'):
-            file = file.split('/')[-1]
-        return os.path.join(self.get_datapath(), file)
+    def get_filepath(self, file_name):
+        if file_name.startswith('http'):
+            file_name = file_name.split('/')[-1]
+        return os.path.join(self.get_datapath(), file_name)
 
     def get_dialog(self):
         return xbmcgui.Dialog()
@@ -200,12 +200,12 @@ class Common:
             country = user_country
         return country
 
-    def get_cache(self, file):
+    def get_cache(self, file_name):
         json_data = {}
-        file = self.get_filepath(file)
-        if xbmcvfs.exists(file):
+        file_ = self.get_filepath(file_name)
+        if xbmcvfs.exists(file_):
             try:
-                f = xbmcvfs.File(file, 'r')
+                f = xbmcvfs.File(file_, 'r')
                 json_data = json.load(f)
                 f.close()
             except Exception as e:
@@ -213,10 +213,10 @@ class Common:
                 pass
         return json_data
 
-    def cache(self, file, data):
-        file = self.get_filepath(file)
+    def cache(self, file_name, data):
+        file_ = self.get_filepath(file_name)
         try:
-            f = xbmcvfs.File(file, 'w')
+            f = xbmcvfs.File(file_, 'w')
             json.dump(data, f)
             f.close()
         except Exception as e:

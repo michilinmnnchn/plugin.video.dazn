@@ -83,7 +83,8 @@ class Tiles:
                 sub_title = self.plugin.get_resource('{0}{1}Title'.format(self.type[0].lower(), self.type[1:]), 'browseui_')
                 if sub_title.endswith('Title'):
                     sub_title = label[:5]
-            self.item['title'] = '{0} ({1})'.format(self.title, sub_title)
+            if sub_title not in self.title:
+                self.item['title'] = '{0} ({1})'.format(self.title, sub_title)
 
         if self.start:
             self.item['date'] = self.start[:10]

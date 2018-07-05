@@ -172,10 +172,12 @@ class Client:
         }
         data = self.request(self.STARTUP)
         region = data.get('Region', {})
-        if region.get('isAllowed', False):
+        if region:
             self.PORTABILITY = region['CountryPortabilityStatus']
             self.COUNTRY = region['Country']
             self.LANGUAGE = region['Language']
+            self.resources()
+        if region.get('isAllowed', False):
             if self.TOKEN:
                 self.refreshToken()
             else:
