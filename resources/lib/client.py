@@ -100,17 +100,17 @@ class Client:
         else:
             if 'PortabilityAvailable' in self.PORTABILITY:
                 self.COUNTRY = self.plugin.portability_country(self.COUNTRY, data['UserCountryCode'])
-                self.LANGUAGE = data['UserLanguageLocaleKey']
-            ui_lang = self.plugin.get_language()
-            languages = data['SupportedLanguages']
-            for i in languages:
-                if i == ui_lang:
-                    self.LANGUAGE = i
-                    break
+                if not self.LANGUAGE.lower() == data['UserLanguageLocaleKey'].lower():
+                    self.LANGUAGE = data['UserLanguageLocaleKey']
+                    self.setLanguage(data['SupportedLanguages'])
             self.plugin.set_setting('viewer_id', data['ViewerId'])
             self.plugin.set_setting('language', self.LANGUAGE)
             self.plugin.set_setting('country', self.COUNTRY)
             self.plugin.set_setting('portability', self.PORTABILITY)
+
+    def setLanguage(self, languages):
+        self.LANGUAGE = self.plugin.language(self.LANGUAGE, languages)
+        self.resources()
 
     def setToken(self, auth, result):
         self.plugin.log('[{0}] signin: {1}'.format(self.plugin.addon_id, result))
@@ -165,7 +165,7 @@ class Client:
     def startUp(self):
         self.POST_DATA = {
             'LandingPageKey': 'generic',
-            'Languages': '{0}, {1}'.format(self.plugin.get_language(), self.LANGUAGE),
+            'Languages': '{0}, {1}'.format(self.plugin.gui_language(), self.LANGUAGE),
             'Platform': 'web',
             'Manufacturer': '',
             'PromoCode': ''
@@ -176,7 +176,7 @@ class Client:
             self.PORTABILITY = region['CountryPortabilityStatus']
             self.COUNTRY = region['Country']
             self.LANGUAGE = region['Language']
-            self.resources()
+            self.setLanguage(data['SupportedLanguages'])
         if region.get('isAllowed', False):
             if self.TOKEN:
                 self.refreshToken()

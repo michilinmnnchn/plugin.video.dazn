@@ -113,7 +113,7 @@ class Common:
     def build_url(self, query):
         return self.addon_url + '?' + urllib.urlencode(query)
 
-    def get_language(self):
+    def gui_language(self):
         language = xbmc.getLanguage().split(' (')[0]
         return xbmc.convertLanguage(language, xbmc.ISO_639_1)
 
@@ -194,6 +194,14 @@ class Common:
     def get_mpx(self, token):
         token_data = json.loads(self.b64dec(token.split('.')[1]))
         return token_data['mpx']
+
+    def language(self, language, languages):
+        gui_lang = self.gui_language()
+        for i in languages:
+            if i.lower() == gui_lang.lower():
+                language = i
+                break
+        return language
 
     def portability_country(self, country, user_country):
         if user_country in self.portability_list:
