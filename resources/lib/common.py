@@ -218,7 +218,6 @@ class Common:
                 f.close()
             except Exception as e:
                 self.log("[{0}] get cache error: {1}".format(self.addon_id, e))
-                pass
         return json_data
 
     def cache(self, file_name, data):
@@ -229,7 +228,6 @@ class Common:
             f.close()
         except Exception as e:
             self.log("[{0}] cache error: {1}".format(self.addon_id, e))
-            pass
 
     def initcap(self, text):
         if text.isupper():
