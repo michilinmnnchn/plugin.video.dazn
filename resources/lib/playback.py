@@ -11,12 +11,21 @@ class Playback:
         self.LaUrlAuthParam = ''
         self.get_detail(data.get('PlaybackPrecision', {}), data.get('PlaybackDetails', []))
 
+    def compatible(self, cdn):
+        result = False
+        for i in self.plugin.compatibility_list:
+            if i in cdn:
+                result = True
+        return result
+
     def get_detail(self, precision, details):
-        cdns = precision.get('Cdns', [])
-        for i in cdns:
-            self.parse_detail(details, i)
-            if self.ManifestUrl:
-                break
+        if precision.get('Cdns') and self.plugin.compatibility_mode:
+            cdns = precision['Cdns']
+            for i in cdns:
+                if self.compatible(i):
+                    self.parse_detail(details, i)
+                    if self.ManifestUrl:
+                        break
         if not self.ManifestUrl:
             self.parse_detail(details)
 

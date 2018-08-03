@@ -11,6 +11,11 @@
     <extension point="xbmc.addon.metadata">
         <reuselanguageinvoker>true</reuselanguageinvoker>
         <news>
+- added compatibility mode setting for video playback *
+
+* enabled will (hopefully) ensure proper playback for kodi 17+
+  disabled will always require latest kodi/inputstream adaptive builds
+
 - added italian and spanish translations
 - switched to resources provided by api
 - enabled reusepython (performance boost on slow systems - kodi 18 only)
