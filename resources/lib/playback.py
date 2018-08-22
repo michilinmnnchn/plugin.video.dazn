@@ -9,6 +9,7 @@ class Playback:
         self.ManifestUrl = ''
         self.LaUrl = ''
         self.LaUrlAuthParam = ''
+        self.Cdns = []
         self.get_detail(data.get('PlaybackPrecision', {}), data.get('PlaybackDetails', []))
 
     def compatible(self, cdn):
@@ -17,21 +18,34 @@ class Playback:
             if i in cdn:
                 result = True
         return result
+    
+    def clean_name(self, cdns):
+        return [cdn.replace('live', '').replace('vod', '') for cdn in cdns]
 
     def get_detail(self, precision, details):
-        if precision.get('Cdns') and self.plugin.compatibility_mode:
-            cdns = precision['Cdns']
-            for i in cdns:
+        if precision.get('Cdns'):
+            self.Cdns = self.clean_name(precision['Cdns'])
+        if self.Cdns and self.plugin.compatibility_mode:
+            for i in self.Cdns:
                 if self.compatible(i):
                     self.parse_detail(details, i)
                     if self.ManifestUrl:
                         break
+        elif self.Cdns and (self.plugin.select_cdn or self.plugin.preferred_cdn):
+            cdn = self.plugin.get_cdn(self.Cdns)
+            if cdn:
+                self.parse_detail(details, cdn)
+        if self.Cdns and not self.ManifestUrl:
+            for i in self.Cdns:
+                self.parse_detail(details, i)
+                if self.ManifestUrl:
+                    break
         if not self.ManifestUrl:
             self.parse_detail(details)
 
     def parse_detail(self, details, cdn=''):
         for i in details:
-            if cdn == i['CdnName'] or not cdn:
+            if cdn == self.clean_name([i['CdnName']])[0] or not cdn:
                 r = requests.head(i['ManifestUrl'])
                 if r.status_code == 200:
                     self.ManifestUrl = i['ManifestUrl']

@@ -48,6 +48,14 @@ msgctxt "#30022"
 msgid "Compatibility Mode"
 msgstr "Le Mode de Compatibilité"
 
+msgctxt "#30023"
+msgid "Manually select CDN"
+msgstr "Sélectionnez manuellement CDN"
+
+msgctxt "#30024"
+msgid "Preferred CDN"
+msgstr "CDN préféré"
+
 msgctxt "#30214"
 msgid "Switch to Sport"
 msgstr "Passer au Sport"

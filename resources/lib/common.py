@@ -40,6 +40,8 @@ class Common:
         self.force_view = addon.getSetting('force_view') == 'true'
         self.startup = addon.getSetting('startup') == 'true'
         self.compatibility_mode = addon.getSetting('compatibility_mode') == 'true'
+        self.select_cdn = addon.getSetting('select_cdn') == 'true'
+        self.preferred_cdn = addon.getSetting('preferred_cdn')
 
     def utfenc(self, text):
         result = text
@@ -236,3 +238,12 @@ class Common:
             text = string.capwords(text)
             text = text.replace('Dazn', 'DAZN')
         return text
+
+    def get_cdn(self, cdns):
+        if self.select_cdn:
+            ret = self.get_dialog().select(self.get_string(30023), cdns)
+            if not ret == -1:
+                self.preferred_cdn = cdns[ret]
+                self.set_setting('preferred_cdn', self.preferred_cdn)
+                self.set_setting('select_cdn', 'false')
+        return self.preferred_cdn
