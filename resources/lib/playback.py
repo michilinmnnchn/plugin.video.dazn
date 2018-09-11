@@ -11,13 +11,6 @@ class Playback:
         self.LaUrlAuthParam = ''
         self.Cdns = []
         self.get_detail(data.get('PlaybackPrecision', {}), data.get('PlaybackDetails', []))
-
-    def compatible(self, cdn):
-        result = False
-        for i in self.plugin.compatibility_list:
-            if i in cdn:
-                result = True
-        return result
     
     def clean_name(self, cdns):
         return [cdn.replace('live', '').replace('vod', '') for cdn in cdns]
@@ -25,21 +18,15 @@ class Playback:
     def get_detail(self, precision, details):
         if precision.get('Cdns'):
             self.Cdns = self.clean_name(precision['Cdns'])
-        if self.Cdns and self.plugin.compatibility_mode:
-            for i in self.Cdns:
-                if self.compatible(i):
-                    self.parse_detail(details, i)
-                    if self.ManifestUrl:
-                        break
-        elif self.Cdns and (self.plugin.select_cdn or self.plugin.preferred_cdn):
+        if self.Cdns:
             cdn = self.plugin.get_cdn(self.Cdns)
             if cdn:
                 self.parse_detail(details, cdn)
-        if self.Cdns and not self.ManifestUrl:
-            for i in self.Cdns:
-                self.parse_detail(details, i)
-                if self.ManifestUrl:
-                    break
+            else:
+                for i in self.Cdns:
+                    self.parse_detail(details, i)
+                    if self.ManifestUrl:
+                        break
         if not self.ManifestUrl:
             self.parse_detail(details)
 

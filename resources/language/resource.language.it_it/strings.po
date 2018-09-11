@@ -44,10 +44,6 @@ msgctxt "#30021"
 msgid "Inputstream Adaptive Settings..."
 msgstr "Inputstream Adaptive Impostazioni..."
 
-msgctxt "#30022"
-msgid "Compatibility Mode"
-msgstr "Modalità di Compatibilità"
-
 msgctxt "#30023"
 msgid "Manually select CDN"
 msgstr "Seleziona manualmente CDN"
